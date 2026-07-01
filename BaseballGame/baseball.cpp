@@ -3,13 +3,37 @@
 
 using namespace std;
 
+struct GuessResult {
+	bool solved;
+	int strikes;
+	int balls;
+};
+
 class Baseball {
 public:
-	void guess(const string& guessNumber) {
+	Baseball(const string& question) : question(question) {}
+
+	GuessResult guess(const string& guessNumber) {
 		assertInvalidException(guessNumber);
+
+		int strikes = 0;
+		int balls = 0;
+
+		for (int i = 0; i < guessNumber.length(); i++) {
+			if (guessNumber[i] == question[i]) {
+				strikes++;
+			}
+			else if (question.find(guessNumber[i]) != string::npos) {
+				balls++;
+			}
+		}
+
+		return GuessResult{ guessNumber == question, strikes, balls };
 	}
 
 private:
+	string question;
+
 	void assertInvalidException(const string& guessNumber) {
 		if (guessNumber.length() != 3) {
 			throw length_error("Must be three letters");
