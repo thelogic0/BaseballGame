@@ -13,7 +13,7 @@ class Baseball {
 public:
 	Baseball(const string& question) : question(question) {}
 
-	GuessResult guess(const string& guessNumber) {
+	GuessResult guess(const string& guessNumber) const {
 		assertInvalidException(guessNumber);
 
 		int strikes = 0;
@@ -28,15 +28,15 @@ public:
 			}
 		}
 
-		return GuessResult{ guessNumber == question, strikes, balls };
+		return GuessResult{ strikes == static_cast<int>(question.length()), strikes, balls };
 	}
 
 private:
 	string question;
 
-	void assertInvalidException(const string& guessNumber) {
+	void assertInvalidException(const string& guessNumber) const {
 		if (guessNumber.length() != 3) {
-			throw length_error("Must be three letters");
+			throw length_error("Must be three digits");
 		}
 
 		for (auto ch : guessNumber) {
